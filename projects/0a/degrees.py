@@ -51,7 +51,6 @@ def load_data(directory):
             except KeyError:
                 pass
 
-
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
@@ -92,9 +91,33 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # TODO
-    raise NotImplementedError
+    # init frontier
+    srcNode = Node(source, None, None)
+    frontier = QueueFrontier()
+    frontier.add(srcNode)
 
+    visited = set()
+
+    while True:
+        if frontier.empty(): return None
+        # pop off current node
+        curNode = frontier.remove()
+        # add surrounding neighbors
+        for action, state in neighbors_for_person(curNode.state):
+            if not frontier.contains_state(state) and state not in visited:
+                childNode = Node(state, curNode, action)
+
+                # check for goal
+                if childNode.state == target:
+                    path = []
+                    while childNode.parent is not None:
+                        path.append((childNode.action, childNode.state))
+                        childNode = childNode.parent
+                    path.reverse()
+                    return path
+                else:
+                    frontier.add(childNode)
+        visited.add(curNode.state)
 
 def person_id_for_name(name):
     """
