@@ -64,8 +64,30 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
-
+    winningRun = len(board)
+    winningCombos = [
+                     [(0, 0), (0, 1), (0, 2)],
+                     [(1, 0), (1, 1), (1, 2)],
+                     [(2, 0), (2, 1), (2, 2)],
+                     [(0, 0), (1, 0), (2, 0)],
+                     [(0, 1), (1, 1), (2, 1)],
+                     [(0, 2), (1, 2), (2, 2)],
+                     [(0, 0), (1, 1), (2, 2)],
+                     [(0, 2), (1, 1), (2, 0)]
+                    ]
+    for combo in winningCombos:
+        xCount = 0
+        oCount = 0
+        for i, j in combo:
+            if board[i][j] == X:
+                xCount+=1
+            if board[i][j] == O:
+                oCount+=1
+        if xCount == winningRun:
+            return X
+        if oCount == winningRun: 
+            return O
+    return None
 
 def terminal(board):
     """
